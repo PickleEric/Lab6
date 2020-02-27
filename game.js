@@ -24,7 +24,11 @@ function refresh(){
     countryName.push(randomCountryEl.name)// This pushes our elements country name in to the countryName array
 }
 submitButton.addEventListener('click', function (){
+
     let userAnswer = userAnswerElement.value //This turns our users element in to a value 
+    if(!userAnswer){// Our validation if nothing is entered in the user input (this for some reason wont trigger)
+            alert('Please enter a capital name')
+    }else{
     let url = `https://api.worldbank.org/v2/country/${countryCode}?format=json` // The url for the web page with an arrey of were we are getting the capital from
       fetch(url)//Fetch function that calls our url
     .then( (res) => res.json())// this calls for a response 
@@ -33,8 +37,6 @@ submitButton.addEventListener('click', function (){
         let capitalCity = rcc[1][0]['capitalCity']// using indexing this stores a value in to capitalCity
         console.log(userAnswer)
         console.log(capitalCity)
-        if(!userAnswer)// Our validation if nothing is entered in the user input (this for some reason wont trigger)
-            resultTextElement.innerHTML = `Please enter a capital name.`
         if(userAnswer.trim().toLowerCase() != capitalCity.toLowerCase())// Validation if the user enters the incorrect capital
             resultTextElement.innerHTML = `Incorrect, the capital of ${countryName} is not ${userAnswer} it is ${capitalCity}`
         if(userAnswer.trim().toLowerCase() === capitalCity.toLowerCase())// Validation if the user enters in the correct capital name 
@@ -43,7 +45,7 @@ submitButton.addEventListener('click', function (){
     .catch ( err => { // if no response console logs error message
         console.log(err)
     })
-})
+}})
 playAgainButton.addEventListener('click', function(){
 userAnswerElement.value = ''// resets user answer element
 countryCode = []//clears the countryCode array
